@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME_TEST</title>
+    <style>
+        body{
+            margin: 0;
+        }
+        #PCheader{
+            background-color: rgba(105, 74, 86, 0.75);
+            margin: 0;
+        }
+        #PCheader .header_container{
+            width: 660px;
+            margin:  0 auto;
+            display: flex;
+            justify-content: space-between;
+        }
+
+         #PCheader .header_container .header_site{
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight: bold;
+            line-height: 50px;
+            color: #FFF;
+            text-decoration: none;
+         }
+         .menu_wrap{
+            display: flex;
+            gap: 0 16px;
+            justify-content: flex-end;
+         }
+         .menu_wrap .menu{
+            color: #FFF;
+            font-size: 14px;
+            font-family: sans-serif;
+            line-height: 50px;
+            text-decoration: none;
+            cursor: pointer;
+            caret-color: transparent;
+         }
+         #SPheader{
+            background-color: rgba(105, 74, 86, 0.75);
+            margin: 0;
+        }
+        #SPheader .header_container{
+            margin:  0 16px;
+            display: flex;
+            justify-content: space-between;
+        }
+        #SPheader .header_container .header_site{
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight: bold;
+            line-height: 56px;
+            color: #FFF;
+            text-decoration: none;
+        }
+         #hum_icn {
+            width: 56px;
+            height: 56px;
+            z-index: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px 0;
+            cursor: pointer;
+         }
+         #hum_icn span{
+            display: block;
+            background-color: #FFF;
+            height: 2px;
+            border-radius: 1px;
+            width: 36px;
+            position: relative;
+            caret-color: transparent;
+            transition: ease 600ms;
+         }
+         #hum_icn.active{
+            gap: 0;
+            z-index: 10;
+         }
+           #hum_icn.active span{
+            background-color: #000;
+         }
+         #hum_icn.active span:nth-child(1){
+            transform: rotate(45deg);
+            top : 2px;
+         }
+         #hum_icn.active span:nth-child(2){
+            opacity: 0;
+         }
+         #hum_icn.active span:nth-child(3){
+            transform: rotate(-45deg);
+            top: -2px;
+         }
+         #modal_menu{
+            display: block;
+            position: fixed;
+            z-index: 5;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            height: calc(var(--vh, 1vh)*100);
+            width: 100%;
+            transition: all ease 600ms;
+         }
+         #modal_menu.active{
+            opacity: 1;
+            visibility: visible;
+         }
+         .scrim{
+            background-color: rgba(0, 0, 0, 0.5);
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: end;
+         }
+         .scrim .menu_containor{
+            width: 60%;
+            background-color: #FFF;
+            display: flex;
+            flex-direction: column;
+            padding: 72px 0px 0px 36px;
+            gap: 16px 0;
+            margin: 0;
+            list-style-type: none;
+         }
+         .hum_menu{
+            font-size: 24px;
+            font-family: sans-serif;
+            font-weight: bold;
+            text-decoration: none;
+            line-height: 24px;
+            cursor: pointer;
+            caret-color: transparent;
+         }
+         article{
+            background-color: aqua;
+            height: 300px;
+            margin: 10px;
+        }
+    </style>
+    <script>
+        function openHum(openEl,humIcn){
+            openEl.classList.add("active");
+            humIcn.classList.add("active");
+        }
+        function closeHum(closeEl,humIcn){
+            closeEl.classList.remove("active");
+            humIcn.classList.remove("active");
+        }
+        function changeVh(){
+            let height = window.innerHeight;
+            let vh = height * 0.01;
+            document.documentElement.style.setProperty("--vh", `${vh}px`);
+        }
+        function resizeWindow(){
+            console.log(window.innerHeight);
+            changeVh();
+        }
+        window.onresize = resizeWindow;
+        function humActive(id, className) {
+            //console.log(typeof el);
+                //this.className is String
+            let humIcn = document.getElementById(id);
+            let fadeInOutEl = document.getElementById("modal_menu");
+            if (className.includes("active")) {
+                closeHum(fadeInOutEl, humIcn);
+            } else {
+                openHum(fadeInOutEl, humIcn);
+            }
+        }
+        function moveToContents(btnText){
+            let anchor = document.getElementById(btnText.toLowerCase(btnText));
+            let scrollY= anchor.getBoundingClientRect().top - 64;
+            window.scroll({
+                top : scrollY,
+                behavior: "smooth"
+            })
+
+            let fadeInOutEl = document.getElementById("modal_menu");
+            let humIcn = document.getElementById("hum_icn");
+            closeHum(fadeInOutEl, humIcn);
+        }
+    </script>
+</head>
+<body>
+    <nav id="SPheader">
+        <div class="header_container">
+            <a href="" class="header_site">MOMOLIO</a>
+            <div id="hum_icn" onclick="humActive(this.id,this.className)">
+                <span></span><span></span><span></span>
+            </div>
+             <div id="modal_menu">
+                    <div class="scrim">
+                        <ul class="menu_containor">
+                                <li><a class="hum_menu" onclick="moveToContents(this.textContent)">HELLO</a></li>
+                                <li><a class="hum_menu">PROFIELE</a></li>
+                                <li><a class="hum_menu" onclick="moveToContents(this.textContent)">WORKS</a></li>
+                                <li><a class="hum_menu">CLAP</a></li>
+                                <li><a class="hum_menu">LINLS</a></li>
+                        </ul>
+                        </div>
+                    </div>
+            </div>
+
+        </div>
+    </nav>
+    <br>
+    <nav id="PCheader">
+        <div class="header_container">
+            <a href="" class="header_site">MOMORIO</a>
+            <div class="menu_wrap">
+                <a class="menu">TEST1</a>
+                <a class="menu">TEST2</a>
+                <a class="menu">TEST3</a>
+                <a class="menu">TEST4</a>
+                <a class="menu">TEST5</a>
+            </div>
+        </div>
+    </nav>
+        グローバルナビゲーションはnavのほうがいいみたい
+        メインコンテンツはmainでくくる
+        1つのコンテンツをarticleで囲む
+        headerはページ全体あるいは1つのコンテンツのヘッダー
+        footerはページ全体あるいは1つのコンテンツのフッター
+    <main>
+        <article id="hello">hello</article>
+        <article id="profiele">profieke</article>
+        <article id="works">works</article>
+        <article id="clap">clap</article>
+        <article id="links">links</article>
+    </main>
+</body>
+</html>
